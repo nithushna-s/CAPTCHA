@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Captcha </title>
+  <style>
+    body {
+      font-family: 'Arial', sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+   
+    }
+
+    #captcha-container {
+      text-align: center;
+      background-color: #3498db;
+      padding: 5%;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    #captcha {
+      border: 2px solid #2980b9;
+      margin-bottom: 20px;
+      background-color: #fff;
+      border-radius: 8px;
+      padding: 20px;
+      transition: background-color 0.3s ease;
+    }
+
+    #captcha:hover {
+      background-color: #f0f0f0;
+    }
+
+    #captcha canvas {
+      display: inline-block;
+      vertical-align: middle;
+    }
+
+    #cpatchaTextBox {
+      font-size: 16px;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      margin-right: 5px;
+    }
+
+    #submit {
+      cursor: pointer;
+      background-color: #2980b9;
+      color: white;
+      border: none;
+      padding: 12px 20px;
+      border-radius: 5px;
+      font-size: 16px;
+      transition: background-color 0.3s ease;
+    }
+
+    #submit:hover {
+      background-color: #2575a7;
+    }
+  </style>
+</head>
+<body>
+
+<div id="captcha-container">
+  <div id="captcha"></div>
+  <input type="text" id="cpatchaTextBox" placeholder="Enter Captcha">
+  <button id="submit" onclick="validateCaptcha()">Submit</button>
+</div>
+
+<script>
+  var code;
+
+  function createCaptcha() {
+    document.getElementById('captcha').innerHTML = "";
+    var charsArray =
+      "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ@!#$%^&*";
+    var lengthOtp = 6;
+    var captcha = [];
+
+    for (var i = 0; i < lengthOtp; i++) {
+      var index = Math.floor(Math.random() * charsArray.length + 1);
+
+      if (captcha.indexOf(charsArray[index]) == -1)
+        captcha.push(charsArray[index]);
+      else i--;
+    }
+
+    var canv = document.createElement("canvas");
+    canv.width = 100;
+    canv.height = 50;
+
+    var ctx = canv.getContext("2d");
+    ctx.font = "25px 'Arial'";
+    ctx.fillStyle = "#333";
+    ctx.fillText(captcha.join(""), 10, 30);
+
+    code = captcha.join("");
+    document.getElementById("captcha").appendChild(canv);
+  }
+
+  function validateCaptcha() {
+    if (document.getElementById("cpatchaTextBox").value == code) {
+      alert("Valid Captcha");
+      createCaptcha();
+    } else {
+      alert("Invalid Captcha. Try Again");
+      createCaptcha();
+    }
+  }
+
+  createCaptcha();
+</script>
+
+</body>
+</html>
